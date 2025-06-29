@@ -5,3 +5,4 @@ geopy
 timezonefinder
 matplotlib
 numpy
+flask-cors
