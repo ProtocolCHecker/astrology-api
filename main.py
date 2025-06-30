@@ -51,6 +51,34 @@ def birth_chart():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
+@app.route('/compatibility', methods=['POST'])
+def compatibility():
+    data = request.get_json()
+
+    try:
+        # Person 1 data
+        birth_date1 = tuple(data['person1']['birth_date'])
+        birth_time1 = tuple(data['person1']['birth_time'])
+        birth_place1 = data['person1']['birth_place']
+
+        # Person 2 data
+        birth_date2 = tuple(data['person2']['birth_date'])
+        birth_time2 = tuple(data['person2']['birth_time'])
+        birth_place2 = data['person2']['birth_place']
+
+        # Create charts for both people
+        chart1 = tool.create_birth_chart(birth_date1, birth_time1, birth_place1)
+        chart2 = tool.create_birth_chart(birth_date2, birth_time2, birth_place2)
+
+        # Run compatibility analysis
+        result = tool.analyze_compatibility(chart1, chart2)
+
+        return jsonify(result)
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 5000))  # use Render's port or default to 5000
     app.run(host="0.0.0.0", port=port, debug=True)
