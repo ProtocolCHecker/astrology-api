@@ -56,27 +56,30 @@ def compatibility():
     data = request.get_json()
 
     try:
-        # Person 1 data
+        # Person 1
         birth_date1 = tuple(data['person1']['birth_date'])
         birth_time1 = tuple(data['person1']['birth_time'])
         birth_place1 = data['person1']['birth_place']
+        gender1 = data['person1'].get('gender', 'Other')
 
-        # Person 2 data
+        # Person 2
         birth_date2 = tuple(data['person2']['birth_date'])
         birth_time2 = tuple(data['person2']['birth_time'])
         birth_place2 = data['person2']['birth_place']
+        gender2 = data['person2'].get('gender', 'Other')
 
-        # Create charts for both people
-        chart1 = tool.create_birth_chart(birth_date1, birth_time1, birth_place1)
-        chart2 = tool.create_birth_chart(birth_date2, birth_time2, birth_place2)
+        # Create charts
+        chart1 = tool.create_birth_chart(birth_date1, birth_time1, birth_place1, gender1)
+        chart2 = tool.create_birth_chart(birth_date2, birth_time2, birth_place2, gender2)
 
-        # Run compatibility analysis
+        # Analyze compatibility
         result = tool.analyze_compatibility(chart1, chart2)
 
         return jsonify(result)
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 
 if __name__ == '__main__':
